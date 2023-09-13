@@ -7,7 +7,7 @@ export const options = {
   };
 
 const client = new grpc.Client();
-client.load(['proto'], 'simple.proto');
+client.load(['/proto'], 'simple.proto');
 
 export default () => {
     client.connect('127.0.0.1:8080', {
