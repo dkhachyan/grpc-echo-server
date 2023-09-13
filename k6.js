@@ -16,13 +16,7 @@ export default () => {
   
     const data = { message: 'Bert' };
     const response = client.invoke('Echo/Do', data);
-  
-    // check(response, {
-    //   'status is OK': (r) => r && r.status === grpc.StatusOK,
-    // });
-  
+
     console.log(JSON.stringify(response.message));
-  
     client.close();
-    // sleep(1);
   };
