@@ -25,7 +25,7 @@ spec:
         image: docker.io/dkhachyan/grpc-echo-server:v0.0.1
         resources:
           limits:
-            cpu: 4
+            cpu: 8
             memory: 8Gi
 ---
 apiVersion: v1

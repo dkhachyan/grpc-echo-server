@@ -12,7 +12,7 @@ spec:
           image: docker.io/dkhachyan/k6-grpc:v0.0.2
           resources:
             limits:
-              cpu: 8
+              cpu: 32
               memory: 8Gi
           volumeMounts:
             - name: k6-config
@@ -37,11 +37,13 @@ metadata:
 data:
   k6.conf: |
     import grpc from 'k6/net/grpc';
+    import { check, sleep } from 'k6';
 
     export const options = {
         vus: 100,
         duration: '1m',
         rps: 8000,
+        summaryTrendStats: ['avg', 'min', 'med', 'max', 'p(95)', 'p(99)']
       };
 
     const client = new grpc.Client();
@@ -52,10 +54,15 @@ data:
           plaintext: true
         });
       
-        const data = { message: 'Bert' };
+        const data = { message: 'Hello' };
         const response = client.invoke('Echo/Do', data);
+
+        check(response, {
+          'status is OK': (r) => r && r.status === grpc.StatusOK,
+        });
 
         console.log(JSON.stringify(response.message));
         client.close();
+        sleep(1)
       };
 
